@@ -231,7 +231,6 @@ func dismissAlertsByID(c *cli.Context) {
 		log.Fatalln(err)
 	}
 
-	fmt.Printf(string(reqJSON))
 	req, err := tsBuildHTTPReq(c, "POST", dismissAlertsEndpoint, reqJSON)
 	resp, err := client.Do(req)
 	if err != nil {
@@ -333,7 +332,6 @@ func dismissAlertsByQueryParameters(c *cli.Context) {
 		log.Fatalln(err)
 	}
 
-	fmt.Printf(string(reqJSON))
 	req, err := tsBuildHTTPReq(c, "POST", dismissAlertsEndpoint, reqJSON)
 	resp, err := client.Do(req)
 	if err != nil {
