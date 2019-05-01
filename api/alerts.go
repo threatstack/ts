@@ -56,21 +56,21 @@ type AlertSeverityCount struct {
 	Count    int `json:"count"`
 }
 
-// DismissAlertByID is the data model for dismissing an alert or 512.
-type DismissAlertByID struct {
+// DismissAlertsByID is the data model for dismissing an alert or 512.
+type DismissAlertsByID struct {
 	IDs               []string      `json:"ids"`
 	DismissReason     DismissReason `json:"dismissReason"`
-	DismissReasonText string        `json:"dismissReasonText"`
+	DismissReasonText string        `json:"dismissReasonText,omitempty"`
 }
 
 // DismissAlertByQueryParameters is the data model for dismissing an alert
 // by a query vs. specific IDs.
-type DismissAlertByQueryParameters struct {
+type DismissAlertsByQueryParameters struct {
 	From              string        `json:"from"`
 	Until             string        `json:"until"`
-	Severity          int           `json:"severity"`
-	RuleID            string        `json:"ruleID"`
-	AgentID           string        `json:"agentID"`
+	Severity          int           `json:"severity,omitempty"`
+	RuleID            string        `json:"ruleID,omitempty"`
+	AgentID           string        `json:"agentID,omitempty"`
 	DismissReason     DismissReason `json:"dismissReason"`
 	DismissReasonText string        `json:"dismissReasonText"`
 }
