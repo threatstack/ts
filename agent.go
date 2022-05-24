@@ -30,6 +30,9 @@ func getAgents(c *cli.Context, online bool) {
 	for {
 		var response tsapi.AgentResponseRaw
 		req, err := tsBuildHTTPReq(c, "GET", agentEndpoint+tokenString, nil)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Fatalln(err)
@@ -74,6 +77,9 @@ func getAgent(c *cli.Context) {
 	client := &http.Client{}
 	agentEndpoint := fmt.Sprintf("/v2/agents/%s", c.Args().Get(0))
 	req, err := tsBuildHTTPReq(c, "GET", agentEndpoint, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)

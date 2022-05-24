@@ -47,6 +47,9 @@ func raw(c *cli.Context) {
 		}
 	}
 	req, err := tsBuildHTTPReq(c, c.String("request"), c.Args().Get(0), payload)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)

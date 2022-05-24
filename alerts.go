@@ -40,6 +40,9 @@ func getAlerts(c *cli.Context, active bool) {
 	for {
 		var response tsapi.AlertResponseRaw
 		req, err := tsBuildHTTPReq(c, "GET", alertsEndpoint+tokenString, nil)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Fatalln(err)
@@ -84,6 +87,9 @@ func getAlert(c *cli.Context) {
 	client := &http.Client{}
 	alertEndpoint := fmt.Sprintf("/v2/alerts/%s", c.Args().Get(0))
 	req, err := tsBuildHTTPReq(c, "GET", alertEndpoint, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -103,7 +109,7 @@ func getAlert(c *cli.Context) {
 
 func countAlerts(c *cli.Context) {
 	client := &http.Client{}
-	alertsEndpoint := fmt.Sprintf("/v2/alerts/severity-counts")
+	alertsEndpoint := "/v2/alerts/severity-counts"
 	var first_param bool = true
 	if c.String("from") != "" {
 		alertsEndpoint = alertsEndpoint + "?from=" + c.String("from")
@@ -118,6 +124,9 @@ func countAlerts(c *cli.Context) {
 		}
 	}
 	req, err := tsBuildHTTPReq(c, "GET", alertsEndpoint, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -143,6 +152,9 @@ func getEvents(c *cli.Context) {
 	client := &http.Client{}
 	eventsEndpoint := fmt.Sprintf("/v2/alerts/%s/events", c.Args().Get(0))
 	req, err := tsBuildHTTPReq(c, "GET", eventsEndpoint, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -175,17 +187,17 @@ func dismissAlertsByID(c *cli.Context) {
 		validInput = false
 	}
 
-	if c.String("dismissReasonText") == "" && c.String("dismissReason") == "OTHER"{
+	if c.String("dismissReasonText") == "" && c.String("dismissReason") == "OTHER" {
 		errs = append(errs, "Dismiss reason OTHER entered, but no dismiss reason text provided")
 		validInput = false
 	}
-	
-	if c.String("dismissReasonText") != "" && c.String("dismissReason") != "OTHER"{
+
+	if c.String("dismissReasonText") != "" && c.String("dismissReason") != "OTHER" {
 		errs = append(errs, "Dismiss reason text entered, but dismiss reason is not OTHER")
 		validInput = false
 	}
 
-	if validInput == false {
+	if !validInput {
 		cli.ShowSubcommandHelp(c)
 		fmt.Printf("\nERROR: Unable to create alert dismissal request.\n")
 		for _, v := range errs {
@@ -194,7 +206,7 @@ func dismissAlertsByID(c *cli.Context) {
 		os.Exit(1)
 	}
 
-	file, err :=os.Open(c.String("alertIDs"))
+	file, err := os.Open(c.String("alertIDs"))
 	if err != nil {
 		fmt.Printf("\nERROR: Unable to read alert IDs from %s", c.String("alertIDs"))
 		os.Exit(1)
@@ -219,11 +231,10 @@ func dismissAlertsByID(c *cli.Context) {
 		os.Exit(1)
 	}
 
-
 	alertsToDismiss := tsapi.DismissAlertsByID{
-		IDs:                  alertIDs,
-		DismissReason:        inputDismissReason,
-		DismissReasonText:    c.String("dismissReasonText"),
+		IDs:               alertIDs,
+		DismissReason:     inputDismissReason,
+		DismissReasonText: c.String("dismissReasonText"),
 	}
 
 	reqJSON, err := json.Marshal(alertsToDismiss)
@@ -232,6 +243,9 @@ func dismissAlertsByID(c *cli.Context) {
 	}
 
 	req, err := tsBuildHTTPReq(c, "POST", dismissAlertsEndpoint, reqJSON)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -273,7 +287,7 @@ func dismissAlertsByQueryParameters(c *cli.Context) {
 		validInput = false
 	}
 
-	if c.String("severity") == "" && c.String("ruleID") == "" && c.String("agentID") == ""{
+	if c.String("severity") == "" && c.String("ruleID") == "" && c.String("agentID") == "" {
 		errs = append(errs, "Must include at least one of severity, ruleID, or agentID")
 		validInput = false
 	}
@@ -283,17 +297,17 @@ func dismissAlertsByQueryParameters(c *cli.Context) {
 		validInput = false
 	}
 
-	if c.String("dismissReasonText") == "" && c.String("dismissReason") == "OTHER"{
+	if c.String("dismissReasonText") == "" && c.String("dismissReason") == "OTHER" {
 		errs = append(errs, "Dismiss reason OTHER entered, but no dismiss reason text provided")
 		validInput = false
 	}
-	
-	if c.String("dismissReasonText") != "" && c.String("dismissReason") != "OTHER"{
+
+	if c.String("dismissReasonText") != "" && c.String("dismissReason") != "OTHER" {
 		errs = append(errs, "Dismiss reason text entered, but dismiss reason is not OTHER")
 		validInput = false
 	}
 
-	if validInput == false {
+	if !validInput {
 		cli.ShowSubcommandHelp(c)
 		fmt.Printf("\nERROR: Unable to create alert dismissal request.\n")
 		for _, v := range errs {
@@ -316,15 +330,14 @@ func dismissAlertsByQueryParameters(c *cli.Context) {
 		os.Exit(1)
 	}
 
-
 	alertsToDismiss := tsapi.DismissAlertsByQueryParameters{
-		From:                 c.String("from"),
-		Until:                c.String("until"),
-		Severity:             c.Int("severity"),
-		RuleID:               c.String("ruleID"),
-		AgentID:              c.String("agentID"),
-		DismissReason:        inputDismissReason,
-		DismissReasonText:    c.String("dismissReasonText"),
+		From:              c.String("from"),
+		Until:             c.String("until"),
+		Severity:          c.Int("severity"),
+		RuleID:            c.String("ruleID"),
+		AgentID:           c.String("agentID"),
+		DismissReason:     inputDismissReason,
+		DismissReasonText: c.String("dismissReasonText"),
 	}
 
 	reqJSON, err := json.Marshal(alertsToDismiss)
@@ -333,6 +346,9 @@ func dismissAlertsByQueryParameters(c *cli.Context) {
 	}
 
 	req, err := tsBuildHTTPReq(c, "POST", dismissAlertsEndpoint, reqJSON)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)

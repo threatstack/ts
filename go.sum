@@ -1,0 +1,6 @@
+github.com/tent/hawk-go v0.0.0-20161026210932-d341ea318957 h1:6Fre/uvwovW5YY4nfHZk66cAg9HjT9YdFSAJHUUgOyQ=
+github.com/tent/hawk-go v0.0.0-20161026210932-d341ea318957/go.mod h1:dch7ywQEefE1ibFqBG1erFibrdUIwovcwQjksYuHuP4=
+github.com/urfave/cli v1.20.1-0.20190203184040-693af58b4d51 h1:9BPDfnoHp4nfdJvTcgc5nHV8Wh9gRJwH4xNylDIiAbQ=
+github.com/urfave/cli v1.20.1-0.20190203184040-693af58b4d51/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
+launchpad.net/gocheck v0.0.0-20140225173054-000000000087 h1:Izowp2XBH6Ya6rv+hqbceQyw/gSGoXfH/UPoTGduL54=
+launchpad.net/gocheck v0.0.0-20140225173054-000000000087/go.mod h1:hj7XX3B/0A+80Vse0e+BUHsHMTEhd0O4cpUHr/e/BUM=

@@ -40,7 +40,7 @@ func createS3Portability(c *cli.Context) {
 		validInput = false
 	}
 
-	if validInput == false {
+	if !validInput {
 		cli.ShowSubcommandHelp(c)
 		fmt.Printf("\nERROR: Unable to create enrollment request.\n")
 		for _, v := range errs {
@@ -64,6 +64,9 @@ func createS3Portability(c *cli.Context) {
 	}
 
 	req, err := tsBuildHTTPReq(c, "PUT", s3PortabilityEndpoint, reqJSON)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -106,6 +109,9 @@ func getS3Portability(c *cli.Context) {
 	client := &http.Client{}
 	s3PortabilityEndpoint := "/v2/integrations/s3export"
 	req, err := tsBuildHTTPReq(c, "GET", s3PortabilityEndpoint, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -164,6 +170,9 @@ func deleteS3Portability(c *cli.Context) {
 	}
 
 	req, err := tsBuildHTTPReq(c, "DELETE", s3PortabilityEndpoint, reqJSON)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
