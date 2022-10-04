@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"os"
 
-
 	tsapi "github.com/threatstack/ts/api"
 	"github.com/urfave/cli"
 )
@@ -32,7 +31,7 @@ func inviteUser(c *cli.Context) {
 	if c.String("userrole") == "" {
 		errs = append(errs, "Missing the role for the new user")
 		validInput = false
-	} 
+	}
 
 	if c.String("userrole") != "user" {
 		roleUserInput = false
@@ -40,7 +39,7 @@ func inviteUser(c *cli.Context) {
 
 	if c.String("userrole") != "reader" {
 		roleReaderInput = false
-	} 
+	}
 
 	if c.String("email") == "" {
 		errs = append(errs, "Missing e-mail address for new user")
@@ -93,7 +92,7 @@ func inviteUser(c *cli.Context) {
 
 		fmt.Printf("Invite request sent\n")
 		fmt.Printf("----------------------------------------------------------------------\n")
-		fmt.Printf("Email Set to:         %t\n", enrollmentResponse.SentToEmail)
+		fmt.Printf("Email Set to:         %s\n", enrollmentResponse.SentToEmail)
 		fmt.Printf("Role: %s\n", enrollmentResponse.Role)
 		fmt.Printf("Status:       %s\n", enrollmentResponse.Status)
 
@@ -181,12 +180,11 @@ func deleteUser(c *cli.Context) {
 			log.Fatalln(err)
 		}
 		fmt.Printf("%s\n", body)
-	}	
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 
 	fmt.Printf("%s\n", body)
 }
