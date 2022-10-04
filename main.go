@@ -105,6 +105,10 @@ func main() {
 										Usage: "query for alerts of the chosen severity (choose 1, 2, or 3)",
 									},
 									&cli.StringFlag{
+										Name:  "ruleid, r",
+										Usage: "query for alerts based on rule id",
+									},
+									&cli.StringFlag{
 										Name:  "from, f",
 										Usage: "query for alerts starting from ISO-8610 datetime",
 									},
@@ -292,6 +296,52 @@ func main() {
 									return nil
 								},
 							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "members",
+				Usage: "Manage Threat Stack users",
+				Subcommands: []cli.Command{
+					{
+						Name:  "invite",
+						Usage: "Create an new Threat Stack user for organization (see --help)",
+						Flags: []cli.Flag{
+							&cli.StringFlag{
+								Name:  "userrole, ur",
+								Usage: "add user with either 'user' or 'reader' role",
+							},
+							&cli.StringFlag{
+								Name:  "email, em",
+								Usage: "the email to be used to invite the new user",
+							},
+						},
+						Action: func(c *cli.Context) error {
+							inviteUser(c)
+							return nil
+						},
+					},
+					{
+						Name:  "list",
+						Usage: "show all user from a single organiztion",
+						Action: func(c *cli.Context) error {
+							getUsers(c)
+							return nil
+						},
+					},
+					{
+						Name:  "delete",
+						Usage: "delete user from a single organiztion",
+						Flags: []cli.Flag{
+							&cli.StringFlag{
+								Name:  "userid, uid",
+								Usage: "remove user from organization",
+							},
+						},
+						Action: func(c *cli.Context) error {
+							deleteUser(c)
+							return nil
 						},
 					},
 				},
