@@ -1,9 +1,9 @@
 // ts - golang ts api client
 // raw.go: send raw commands to the API
 //
-// Copyright 2019 Threat Stack, Inc.
+// Copyright 2019-2022 F5 Inc.
 // Licensed under the BSD 3-clause license; see LICENSE for more information.
-// Author: Patrick T. Cable II <pat.cable@threatstack.com>
+
 package main
 
 import (
